@@ -1,30 +1,50 @@
-opportunity-radar/
-│
-├── backend/                # Backend code (Python API + ingestion + AI agents)
-│   ├── src/
-│   │   ├── api/            # FastAPI endpoints
-│   │   │   ├── routes/
+backend/
+├── src/
+│   ├── api/                        # FastAPI endpoints
+│   │   ├── routes/                 # Individual route files
+│   │   │   ├── signals.py
 │   │   │   └── __init__.py
-│   │   ├── core/           # Core logic: DB, settings, utils
-│   │   ├── ingestion/      # Scripts for RSS, news APIs, scraping
-│   │   ├── agents/         # LangGraph nodes & workflows
-│   │   ├── models/         # Pydantic models + SQLAlchemy/SQLModel schemas
-│   │   └── main.py         # FastAPI app entrypoint
+│   │   └── __init__.py
 │   │
-│   ├── tests/              # Unit tests for backend
-│   ├── scripts/            # Helper scripts (DB init, embeddings, maintenance)
-│   ├── requirements.txt    # Python dependencies
-│   ├── Dockerfile          # Backend container
-│   └── docker-compose.yml  # Backend + DB + Redis services
+│   ├── core/                       # Core utilities & configuration
+│   │   ├── config.py               # Environment variables & settings
+│   │   ├── db.py                   # Database connection (PostgreSQL + pgvector)
+│   │   ├── logger.py               # Centralized logging
+│   │   └── utils.py                # Helper functions
+│   │
+│   ├── ingestion/                  # Data collection & crawling
+│   │   ├── scrapy_project/         # Scrapy project for crawling
+│   │   │   ├── scrapy.cfg
+│   │   │   └── opportunity_radar/
+│   │   │       ├── spiders/        # Individual spiders
+│   │   │       │   ├── rss_spider.py
+│   │   │       │   ├── news_api_spider.py
+│   │   │       │   ├── github_trending_spider.py
+│   │   │       │   └── blogs_spider.py
+│   │   │       ├── items.py        # Scrapy Item definitions (RawSignalItem)
+│   │   │       ├── pipelines.py    # Deduplication + PostgreSQL storage
+│   │   │       └── settings.py     # Scrapy settings
+│   │   └── scripts/                # Helper scripts (DB init, embeddings, tests)
+│   │
+│   ├── agents/                     # LangGraph agent workflows (future)
+│   │   └── placeholder.py
+│   │
+│   ├── models/                     # Pydantic + SQLAlchemy/SQLModel schemas
+│   │   ├── raw_signal.py
+│   │   ├── source.py
+│   │   └── company.py
+│   │
+│   └── main.py                     # FastAPI app entrypoint
 │
-├── frontend/               # (Future) Next.js dashboard
-│   ├── src/
-│   ├── public/
-│   ├── package.json
-│   └── next.config.js
+├── tests/                           # Unit tests for backend
+│   ├── test_api.py
+│   └── test_ingestion.py
 │
-├── docs/                   # Project documentation
+├── docs/                            # Project documentation
+│   └── Phase1-Tasks.md
 │
+├── Dockerfile                        # Backend container
+├── docker-compose.yml                 # Backend + Postgres + Redis
+├── requirements.txt                   # Python dependencies
 ├── .gitignore
-├── LICENSE
 └── README.md
